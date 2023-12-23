@@ -8,24 +8,40 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    devices = [ "nodev" ];
+    configurationLimit = 5;
+    #useOSProber = true;
+    extraEntries = ''
+        menuentry "Windows Boot Manager" {
+          insmod part_gpt
+          insmod fat
+          insmod search_fs_uuid
+          insmod chain
+          search --fs-uuid --set=root 0EEA-DE35 
+          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
+  };
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/66fc1335-6e12-47f4-bbcc-b86005c05ed4";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/89c26220-979d-4ec9-a5c6-4951c37bae14";
+      fsType = "btrfs";
+      options = [ "subvol=nixos" ];
     };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/D06E-7EBB";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/B789-9C4A";
       fsType = "vfat";
     };
 
@@ -40,6 +56,6 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

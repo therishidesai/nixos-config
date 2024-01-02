@@ -2,21 +2,17 @@
 {
   networking.hostName = "ah64-thelio";
   services.xserver.videoDrivers = [ "nvidia" ];
+  # OpenGL
+  hardware.opengl.enable = true;
+
   nix.buildMachines = [
     {
-      hostName = "big_arm_2";
+      hostName = "flyingbrick";
       system = "aarch64-linux";
       maxJobs = 16;
       supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
       mandatoryFeatures = [ ];
     }
-    # {
-    #   hostName = "big_arm";
-    #   system = "aarch64-linux";
-    #   maxJobs = 8;
-    #   supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-    #   mandatoryFeatures = [ ];
-    # }
   ];
 
   nix.distributedBuilds = true;

@@ -25,6 +25,8 @@
     
   };
 
+  # udev rules
+  services.udev.packages = [ pkgs.picoprobe-udev-rules ];
 
   # Networking
   networking.networkmanager.enable = true;
@@ -181,6 +183,7 @@
     brave
     ffmpeg
     firefox-bin
+    signal-desktop
     slack
 
     # ui/desktop environment

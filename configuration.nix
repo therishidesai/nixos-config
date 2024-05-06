@@ -180,11 +180,9 @@
     mpv
     optipng
     zathura
-    brave
     ffmpeg
-    firefox-bin
+    firefox
     signal-desktop
-    slack
 
     # ui/desktop environment
     alacritty
@@ -206,5 +204,8 @@
     xfce.xfce4-notifyd
     xfce.xfce4-power-manager
     xfce.xfce4-screenshooter
+  ] ++ lib.optionals (!stdenv.isAarch64) [
+    brave
+    slack
   ];
 }

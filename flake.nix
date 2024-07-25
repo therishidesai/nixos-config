@@ -2,7 +2,7 @@
   description = "My NixOS configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
   };
 

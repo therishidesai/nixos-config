@@ -21,6 +21,7 @@
       allowed-uris = http:// https:// ssh://
       experimental-features = nix-command flakes
       builders-use-substitutes = true
+      allow-import-from-derivation = true
       '';
     
   };
@@ -31,7 +32,8 @@
   # Networking
   networking.networkmanager.enable = true;
   services.tailscale.enable = true;
-  networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
+  networking.firewall.enable = false;
+  # networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -170,6 +172,7 @@
     git-lfs
     neovim-unwrapped
     ripgrep
+    sapling
 
     # ...apps?
     evince
